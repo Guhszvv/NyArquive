@@ -1,0 +1,41 @@
+body {
+    background-color: #0D1321;
+    color: #F0EBD8;
+}
+
+/* corrigido */
+.navbar {
+    display: flex;
+    align-items: center;
+    height: 60px;
+    padding: 0 10px;
+    background-color: #1D2D44;
+}
+
+svg {
+    width: 40px;
+    height: 40px;
+}
+
+.navbartitle {
+    padding-left: 10px;
+    font-size: 20px;
+    font-family: "Itim", cursive;
+}
+
+.right {
+    margin-left: auto;
+}
+
+.configbutton {
+    background-color: transparent;
+    border-color: transparent;
+    color: #F0EBD8;
+}
+
+.configbutton {
+    background-color: transparent;
+    border-color: transparent;
+    color: #F0EBD8;
+}
+

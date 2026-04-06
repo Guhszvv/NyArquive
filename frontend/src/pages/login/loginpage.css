@@ -1,0 +1,102 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Fundo geral */
+body {
+  background: #081225;
+  font-family: sans-serif;
+  color: #e5e7eb;
+}
+
+/* Área principal (considerando navbar) */
+.main {
+  height: calc(100vh - 70px); /* ajusta se tua navbar tiver outra altura */
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Card */
+.login-container {
+  background: #24364d;
+  padding: 40px 35px;
+  border-radius: 16px;
+
+  width: 380px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+/* Título */
+.login-title {
+  text-align: center;
+  font-size: 32px;
+  font-weight: bold;
+}
+
+/* Linha abaixo do título */
+.login-divider {
+  height: 2px;
+  width: 100%;
+  background: #cbd5e1;
+  opacity: 0.6;
+}
+
+/* Inputs */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 14px 16px;
+
+  border: none;
+  border-radius: 10px;
+
+  background: #4a657d;
+  color: #e5e7eb;
+
+  font-size: 16px;
+}
+
+.input-group input::placeholder {
+  color: #d1d5db;
+}
+
+/* Botão */
+.login-button {
+  margin-top: 20px;
+
+  padding: 16px;
+  border: none;
+  border-radius: 10px;
+
+  background: #4a657d;
+  color: #e5e7eb;
+
+  font-size: 22px;
+  font-weight: bold;
+
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.login-button:hover {
+  background: #5f7f99;
+}
+
+/* Focus */
+input:focus {
+  outline: none;
+  background: #5f7f99;
+}
