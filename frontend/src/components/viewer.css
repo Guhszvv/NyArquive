@@ -1,0 +1,15 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.viewer-page {
+  flex: 1; /* ocupa o resto da tela */
+  display: flex;
+}
+
+.viewer {
+  flex: 1;
+  border: none;
+}
