@@ -11,6 +11,8 @@ const PORT = 3004;
 
 const BOOKS_PATH = path.resolve(process.cwd(), "../books");
 
+app.use(express.static("dist"));
+
 app.use(cors({
   origin: "*",
   methods: ["GET"],
