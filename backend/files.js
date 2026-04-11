@@ -35,9 +35,10 @@ app.get("/pdf/:name", (req, res) => {
   const filePath = path.join(BOOKS_PATH, fileName);
 
   if (!fs.existsSync(filePath)) return res.sendStatus(404);
-
-  res.setHeader("Content-Type", "application/pdf");
-  fs.createReadStream(filePath).pipe(res);
+  
+  const stream = fs.createReadStream(filePath);
+  res.setHeader('Content-Type', 'application/pdf');
+  stream.pipe(res);
 });
 
 app.get("/thumbnail/:name", async (req, res) => {

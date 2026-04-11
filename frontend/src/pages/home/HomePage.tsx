@@ -14,7 +14,7 @@ function HomePage() {
 
   return (
     <div>
-      <NavBar isVisible={true} />
+      <NavBar isVisible={true} isViewer={false}/>
 
       <div className="livros">
         {files.map((file) => (

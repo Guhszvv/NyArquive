@@ -1,5 +1,5 @@
 {
-  "name": "frontend",
+  "name": "nyarquive",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -11,8 +11,12 @@
   },
   "dependencies": {
     "@mkholt/pdf-thumbnail": "^2.0.0",
+    "@react-pdf-viewer/core": "^3.12.0",
+    "@react-pdf-viewer/default-layout": "^3.12.0",
+    "pdfjs-dist": "^3.11.174",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
+    "react-pdf-viewer": "^0.1.0",
     "react-router-dom": "^7.14.0"
   },
   "devDependencies": {

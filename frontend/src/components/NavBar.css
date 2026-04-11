@@ -39,3 +39,18 @@ svg {
     color: #F0EBD8;
 }
 
+.center {
+    margin-left: auto;
+}
+
+.zoonin {
+    background-color: transparent;
+    border-color: transparent;
+    color: #F0EBD8;
+}
+
+.zoonout {
+    background-color: transparent;
+    border-color: transparent;
+    color: #F0EBD8;
+}

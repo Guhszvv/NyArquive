@@ -3,14 +3,21 @@ import './NavBar.css';
 
 type NavBarProps = {
   isVisible: boolean;
+  isViewer: boolean;
 };
 
-function NavBar({ isVisible }: NavBarProps) {
+function NavBar({ isVisible, isViewer}: NavBarProps) {
   return (
     <div className='navbar'>
       <FaBook />
       <h1 className='navbartitle'>NyArquive</h1>
-
+      <div className="center">
+        {isViewer && (
+          <>
+            
+          </>
+        )}
+      </div>
       <div className='right'>
         {isVisible && (
           <button className='configbutton'>

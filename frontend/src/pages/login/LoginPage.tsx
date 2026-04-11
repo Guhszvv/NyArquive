@@ -5,7 +5,7 @@ import './loginpage.css'
 function LoginPage() {
     return (
         <div>
-            <NavBar isVisible={false}/>
+            <NavBar isVisible={false} isViewer={false}/>
             <div className="main">
                 <div className="login-container">
                     <div className="login-title">Login</div>

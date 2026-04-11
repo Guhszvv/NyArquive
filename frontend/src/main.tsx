@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 
 import HomePage from './pages/home/HomePage'
-import Viewer from './components/Viewer'
+import ViewerPage from './components/Viewer'
 
 import './main.css'
 
@@ -12,7 +12,7 @@ createRoot(document.getElementById('root')!).render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/viewer/:file" element={<Viewer />} />
+        <Route path="/viewer/:file" element={<ViewerPage />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,
