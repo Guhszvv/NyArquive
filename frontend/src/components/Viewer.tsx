@@ -30,7 +30,7 @@ function Viewer() {
       const encoded = encodeURIComponent(file);
 
       const loadingTask = pdfjsLib.getDocument(
-        `http://100.67.247.44:3004/pdf/${encoded}`
+        `${import.meta.env.VITE_API_URL}/pdf/${encoded}`
       );
 
       const pdfDoc = await loadingTask.promise;
@@ -57,7 +57,6 @@ function Viewer() {
 
       const responsiveScale = containerWidth / baseViewport.width;
 
-      // 🔥 combina responsivo + zoom
       const finalScale = responsiveScale * scale;
 
       const viewport = page.getViewport({ scale: finalScale });

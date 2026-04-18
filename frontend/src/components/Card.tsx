@@ -8,7 +8,7 @@ function Card({ file }: { file: string }) {
       className="card"
       onClick={() => navigate(`/viewer/${encodeURIComponent(file)}`)}
     >
-      <img src={`http://100.67.247.44:3004/thumbnail/${encodeURIComponent(file)}`} crossOrigin="anonymous" />
+      <img src={`${import.meta.env.VITE_API_URL}/thumbnail/${encodeURIComponent(file)}`} crossOrigin="anonymous" />
 
       <div className="card-info">
 
