@@ -17,7 +17,7 @@ function Viewer() {
 
   const [pdf, setPdf] = useState<PDFDocumentProxy | null>(null);
   const [pageNum, setPageNum] = useState<number>(1);
-  const [maxPage, setMaxPage] = useState<number>(1);
+  const [, setMaxPage] = useState<number>(1);
   const [scale, setScale] = useState<number>(1);
 
   const storageKey = `pdf-page-${file}`;
@@ -44,7 +44,7 @@ function Viewer() {
     };
 
     loadPdf();
-  }, [file, storageKey]);
+  }, [file, storageKey, storageKeyMaxPage]);
 
   // 🔹 Renderizar página
   useEffect(() => {
@@ -102,7 +102,7 @@ function Viewer() {
     };
 
     renderPage();
-  }, [pdf, pageNum, storageKey, scale]);
+  }, [pdf, pageNum, storageKey, scale, storageKeyMaxPage]);
 
   // 🔹 Navegação teclado
   useEffect(() => {
