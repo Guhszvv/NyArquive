@@ -17,10 +17,11 @@ function Viewer() {
 
   const [pdf, setPdf] = useState<PDFDocumentProxy | null>(null);
   const [pageNum, setPageNum] = useState<number>(1);
+  const [, setMaxPage] = useState<number>(1);
   const [scale, setScale] = useState<number>(1);
 
   const storageKey = `pdf-page-${file}`;
-  
+  const storageKeyMaxPage = `max-page-${file}`;  
 
   // 🔹 Carregar PDF
   useEffect(() => {
@@ -30,18 +31,20 @@ function Viewer() {
       const encoded = encodeURIComponent(file);
 
       const loadingTask = pdfjsLib.getDocument(
-        `http://100.67.247.44:3004/pdf/${encoded}`
+        `${import.meta.env.VITE_API_URL}/pdf/${encoded}`
       );
 
       const pdfDoc = await loadingTask.promise;
       setPdf(pdfDoc);
 
       const savedPage = localStorage.getItem(storageKey);
+      const maxPage = localStorage.getItem(storageKeyMaxPage);
       if (savedPage) setPageNum(Number(savedPage));
+      if (maxPage) setMaxPage(Number(maxPage));
     };
 
     loadPdf();
-  }, [file, storageKey]);
+  }, [file, storageKey, storageKeyMaxPage]);
 
   // 🔹 Renderizar página
   useEffect(() => {
@@ -57,7 +60,6 @@ function Viewer() {
 
       const responsiveScale = containerWidth / baseViewport.width;
 
-      // 🔥 combina responsivo + zoom
       const finalScale = responsiveScale * scale;
 
       const viewport = page.getViewport({ scale: finalScale });
@@ -96,10 +98,11 @@ function Viewer() {
       });
 
       localStorage.setItem(storageKey, String(pageNum));
+      localStorage.setItem(storageKeyMaxPage, String(pdf?.numPages ?? "-"));
     };
 
     renderPage();
-  }, [pdf, pageNum, storageKey, scale]);
+  }, [pdf, pageNum, storageKey, scale, storageKeyMaxPage]);
 
   // 🔹 Navegação teclado
   useEffect(() => {

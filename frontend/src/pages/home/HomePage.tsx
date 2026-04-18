@@ -7,7 +7,7 @@ function HomePage() {
   const [files, setFiles] = useState<string[]>([]);
   console.log(files);
   useEffect(() => {
-    fetch("http://100.67.247.44:3004/files")
+    fetch(`${import.meta.env.VITE_API_URL}/files`)
       .then(res => res.json())
       .then(setFiles);
   }, []);
