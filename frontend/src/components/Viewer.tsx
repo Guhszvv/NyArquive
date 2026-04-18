@@ -17,10 +17,11 @@ function Viewer() {
 
   const [pdf, setPdf] = useState<PDFDocumentProxy | null>(null);
   const [pageNum, setPageNum] = useState<number>(1);
+  const [maxPage, setMaxPage] = useState<number>(1);
   const [scale, setScale] = useState<number>(1);
 
   const storageKey = `pdf-page-${file}`;
-  
+  const storageKeyMaxPage = `max-page-${file}`;  
 
   // 🔹 Carregar PDF
   useEffect(() => {
@@ -37,7 +38,9 @@ function Viewer() {
       setPdf(pdfDoc);
 
       const savedPage = localStorage.getItem(storageKey);
+      const maxPage = localStorage.getItem(storageKeyMaxPage);
       if (savedPage) setPageNum(Number(savedPage));
+      if (maxPage) setMaxPage(Number(maxPage));
     };
 
     loadPdf();
@@ -95,6 +98,7 @@ function Viewer() {
       });
 
       localStorage.setItem(storageKey, String(pageNum));
+      localStorage.setItem(storageKeyMaxPage, String(pdf?.numPages ?? "-"));
     };
 
     renderPage();
