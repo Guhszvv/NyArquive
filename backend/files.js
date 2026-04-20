@@ -19,7 +19,7 @@ app.use(cors({
   allowedHeaders: ["Content-Type"],
 }));
 
-// Endpoint para listar PDFs
+// Endpoint for list PDFs
 app.get("/files", (req, res) => {
   if (!fs.existsSync(BOOKS_PATH)) {
     return res.status(500).json({ error: "Diretório de livros não encontrado." });
@@ -29,7 +29,7 @@ app.get("/files", (req, res) => {
   res.json(files);
 });
 
-// Endpoint para servir PDF
+// Endpoint for stream PDF
 app.get("/pdf/:name", (req, res) => {
   const fileName = path.basename(decodeURIComponent(req.params.name));
   const filePath = path.join(BOOKS_PATH, fileName);
@@ -50,18 +50,16 @@ app.get("/thumbnail/:name", async (req, res) => {
 
     if (!fs.existsSync(filePath)) return res.sendStatus(404);
 
-    // Converte só a primeira página para PNG via pdftoppm
     await execFileAsync("pdftoppm", [
       "-png",
-      "-f", "1",   // primeira página
-      "-l", "1",   // última página (só a 1)
-      "-r", "100", // DPI
+      "-f", "1",   
+      "-l", "1",   
+      "-r", "100", 
       "-scale-to", "400",
       filePath,
       tmpOutput,
     ]);
 
-    // pdftoppm gera arquivos como thumb_123-1.png (com zero-padding)
     const files = fs.readdirSync("/tmp").filter(f =>
       f.startsWith(path.basename(tmpOutput)) && f.endsWith(".png")
     );
@@ -76,12 +74,10 @@ app.get("/thumbnail/:name", async (req, res) => {
     const stream = fs.createReadStream(imgPath);
     stream.pipe(res);
 
-    // Limpa arquivo temporário após enviar
     res.on("finish", () => fs.unlink(imgPath, () => {}));
 
   } catch (err) {
     console.error("Erro ao converter PDF:", err);
-    // Limpeza de emergência
     fs.readdirSync("/tmp")
       .filter(f => f.startsWith(path.basename(tmpOutput)))
       .forEach(f => fs.unlink(path.join("/tmp", f), () => {}));
@@ -91,6 +87,6 @@ app.get("/thumbnail/:name", async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
+  console.log(`Running on: ${PORT}`);
   console.log('This process is your pid ' + process.pid);
 });
