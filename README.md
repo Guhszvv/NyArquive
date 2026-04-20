@@ -1,9 +1,12 @@
-<center><h1>NyArquive</h1></center>
+<div>
+<h1 align="center"> NyArquive </h1>
 <p align="center">
     <a href="LICENSE"><img src="https://img.shields.io/github/license/Guhszvv/NyArquive?style=for-the-badge&color=orange"></a>
     <a><img src="https://img.shields.io/badge/RAM-~50MB-blue?style=for-the-badge"></a>
     <a><img src="https://img.shields.io/github/stars/Guhszvv/NyArquive?style=for-the-badge"></a>
 </p>
+</div>
+
 
 NyArquive is a **ultra-lightweight**, **self-hosted library** that runs anywhere. No Docker, no database, no complexity. Just you and your PDFs
 
