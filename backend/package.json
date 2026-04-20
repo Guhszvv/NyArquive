@@ -1,3 +1,10 @@
 {
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "express": "^4.19.2",
+    "cors": "^2.8.6"
+  },
+  "scripts": {
+    "start": "node files.js"
+  }
 }
