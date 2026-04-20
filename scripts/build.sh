@@ -15,14 +15,13 @@ info()    { echo -e "${BLUE}[INFO]${RESET} $1"; }
 success() { echo -e "${GREEN}[OK]${RESET} $1"; }
 error()   { echo -e "${RED}[ERROR]${RESET} $1"; exit 1; }
 
-clear
 info "Starting Building"
 
 # ===== VALIDATION =====
 [ -d "$FRONTEND_DIR" ] || error "Frontend folder does not exist"
 [ -d "$BACKEND_DIR"  ] || error "Backend folder does not exist"
 
-# ===== LOAD FNM (importante no seu caso) =====
+# ===== LOAD FNM =====
 eval "$(fnm env)" || error "fnm not loaded"
 
 # ===== Build =====
@@ -60,5 +59,3 @@ cp -r "$BUILD_DIR" "../$BACKEND_DIR" || error "Failed to copy build"
 rm -rf ../scripts/build.log
 
 success "Successfully built"
-info "Use: node ./files.js"
-echo -e "${YELLOW}URL:${RESET} https://localhost:3004"
