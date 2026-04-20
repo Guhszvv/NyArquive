@@ -27,6 +27,14 @@ If this project helped you, consider starring it!
 3. Drop your PDFs in `./books`
 4. `cd backend && npm run start`
 
+## Keybinds
+| Key | Used to       |
+|-----|---------------|
+| ↑   | Zoom In       |
+| ↓   | Zoom Out      |
+| ←   | Previous page |
+| →   | Next Page     |
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
