@@ -19,6 +19,9 @@ error()   { echo -e "${RED}[ERROR]${RESET} $1"; exit 1; }
 
 clear
 
+info "Creating ./books folder"
+mkdir -p ./books
+
 info "Installing frontend dependencies..."
 cd "$FRONTEND_DIR" && npm install > ../scripts/build.log 2>&1 && cd ..
 
