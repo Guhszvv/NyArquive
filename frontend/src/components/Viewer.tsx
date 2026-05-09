@@ -19,13 +19,12 @@ function Viewer() {
   const [pageNum, setPageNum] = useState<number>(1);
   const [, setMaxPage] = useState<number>(1);
   const [scale, setScale] = useState<number>(1);
-
   const [darkMode, setDarkMode] = useState(false);
 
   const storageKey = `pdf-page-${file}`;
   const storageKeyMaxPage = `max-page-${file}`;  
 
-  // 🔹 Carregar PDF
+  // Load PDF
   useEffect(() => {
     if (!file) return;
 
@@ -48,7 +47,7 @@ function Viewer() {
     loadPdf();
   }, [file, storageKey, storageKeyMaxPage]);
 
-  // 🔹 Renderizar página
+  // Render page
   useEffect(() => {
     if (!pdf) return;
     if (!canvasRef.current || !textLayerRef.current || !containerRef.current) return;
@@ -106,7 +105,7 @@ function Viewer() {
     renderPage();
   }, [pdf, pageNum, storageKey, scale, storageKeyMaxPage]);
 
-  // 🔹 Navegação teclado
+  // Keybinds
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (!pdf) return;
@@ -146,7 +145,7 @@ function Viewer() {
     return () => window.removeEventListener("keydown", handleKey);
   }, [pdf, darkMode]);
 
-  // 🔹 Resize
+  // Resize
   useEffect(() => {
     const handleResize = () => {
       setPageNum((p) => p);
@@ -173,7 +172,7 @@ function Viewer() {
             zIndex: "9999"
           }}
         >
-          Página{" "}
+          {" "}
           <input
             className="input-page"
             type="number"
@@ -192,7 +191,7 @@ function Viewer() {
               textAlign: "center",
             }}
           />{" "}
-          de {pdf?.numPages ?? "-"}
+          / {pdf?.numPages ?? "-"}
         </div>
       </div>
       <div
@@ -201,9 +200,10 @@ function Viewer() {
           width: "100%",
           display: "flex",
           justifyContent: "center",
-        }}
-      >
+        }}>
         <div style={{ position: "relative" }}>
+
+          {/* Dark mode filter and conditional expression */}
           <canvas ref={canvasRef} style={{ filter: darkMode ? 'invert(80%) brightness(100%) contrast(120%) sepia(50%) saturate(2) hue-rotate(180deg)' : '' }} className="canvas"></canvas>
 
           <div
