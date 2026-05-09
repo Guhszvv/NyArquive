@@ -34,6 +34,7 @@ If this project helped you, consider starring it!
 | ↓   | Zoom Out      |
 | ←   | Previous page |
 | →   | Next Page     |
+| Shift + D | Dark Mode Toggle |
 
 ## License
 
