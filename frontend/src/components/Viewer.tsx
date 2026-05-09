@@ -4,7 +4,7 @@ import type { PDFDocumentProxy } from "pdfjs-dist";
 import pdfWorker from "pdfjs-dist/build/pdf.worker.min.js?url";
 import { useParams } from "react-router-dom";
 import "pdfjs-dist/web/pdf_viewer.css";
-import NavBar from "./NavBar";
+// import NavBar from "./NavBar";
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker;
 
@@ -19,6 +19,8 @@ function Viewer() {
   const [pageNum, setPageNum] = useState<number>(1);
   const [, setMaxPage] = useState<number>(1);
   const [scale, setScale] = useState<number>(1);
+
+  const darkMode = false;
 
   const storageKey = `pdf-page-${file}`;
   const storageKeyMaxPage = `max-page-${file}`;  
@@ -152,7 +154,7 @@ function Viewer() {
   return (
     <div style={{}}>
       <div>
-        <NavBar isVisible={false} isViewer={true}/>
+        {/* <NavBar isVisible={false} isViewer={true}/> */}
         <div
           style={{
             position: "fixed",
@@ -197,7 +199,7 @@ function Viewer() {
         }}
       >
         <div style={{ position: "relative" }}>
-          <canvas ref={canvasRef}></canvas>
+          <canvas ref={canvasRef} style={{ filter: darkMode ? 'invert(80%) brightness(100%) contrast(120%) sepia(50%) saturate(2) hue-rotate(180deg)' : '' }} className="canvas"></canvas>
 
           <div
             ref={textLayerRef}
