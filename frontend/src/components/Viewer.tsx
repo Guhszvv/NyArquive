@@ -20,7 +20,7 @@ function Viewer() {
   const [, setMaxPage] = useState<number>(1);
   const [scale, setScale] = useState<number>(1);
 
-  const darkMode = false;
+  const [darkMode, setDarkMode] = useState(false);
 
   const storageKey = `pdf-page-${file}`;
   const storageKeyMaxPage = `max-page-${file}`;  
@@ -115,9 +115,14 @@ function Viewer() {
           e.key === "ArrowUp" ||
           e.key === "ArrowDown" ||
           e.key === "ArrowLeft" ||
-          e.key === "ArrowRight"
+          e.key === "ArrowRight" ||
+          e.shiftKey && e.key === "D"
         ) {
           e.preventDefault();
+      }
+
+      if (e.shiftKey && e.key === "D") {
+        setDarkMode((p) => !p);
       }
 
       if (e.key === "ArrowRight") {
@@ -139,7 +144,7 @@ function Viewer() {
 
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
-  }, [pdf]);
+  }, [pdf, darkMode]);
 
   // 🔹 Resize
   useEffect(() => {
