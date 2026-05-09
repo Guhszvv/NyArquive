@@ -4,7 +4,7 @@ import type { PDFDocumentProxy } from "pdfjs-dist";
 import pdfWorker from "pdfjs-dist/build/pdf.worker.min.js?url";
 import { useParams } from "react-router-dom";
 import "pdfjs-dist/web/pdf_viewer.css";
-import NavBar from "./NavBar";
+// import NavBar from "./NavBar";
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker;
 
@@ -19,11 +19,12 @@ function Viewer() {
   const [pageNum, setPageNum] = useState<number>(1);
   const [, setMaxPage] = useState<number>(1);
   const [scale, setScale] = useState<number>(1);
+  const [darkMode, setDarkMode] = useState(false);
 
   const storageKey = `pdf-page-${file}`;
   const storageKeyMaxPage = `max-page-${file}`;  
 
-  // 🔹 Carregar PDF
+  // Load PDF
   useEffect(() => {
     if (!file) return;
 
@@ -46,7 +47,7 @@ function Viewer() {
     loadPdf();
   }, [file, storageKey, storageKeyMaxPage]);
 
-  // 🔹 Renderizar página
+  // Render page
   useEffect(() => {
     if (!pdf) return;
     if (!canvasRef.current || !textLayerRef.current || !containerRef.current) return;
@@ -104,7 +105,7 @@ function Viewer() {
     renderPage();
   }, [pdf, pageNum, storageKey, scale, storageKeyMaxPage]);
 
-  // 🔹 Navegação teclado
+  // Keybinds
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (!pdf) return;
@@ -113,9 +114,14 @@ function Viewer() {
           e.key === "ArrowUp" ||
           e.key === "ArrowDown" ||
           e.key === "ArrowLeft" ||
-          e.key === "ArrowRight"
+          e.key === "ArrowRight" ||
+          e.shiftKey && e.key === "D"
         ) {
           e.preventDefault();
+      }
+
+      if (e.shiftKey && e.key === "D") {
+        setDarkMode((p) => !p);
       }
 
       if (e.key === "ArrowRight") {
@@ -137,9 +143,9 @@ function Viewer() {
 
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
-  }, [pdf]);
+  }, [pdf, darkMode]);
 
-  // 🔹 Resize
+  // Resize
   useEffect(() => {
     const handleResize = () => {
       setPageNum((p) => p);
@@ -152,7 +158,7 @@ function Viewer() {
   return (
     <div style={{}}>
       <div>
-        <NavBar isVisible={false} isViewer={true}/>
+        {/* <NavBar isVisible={false} isViewer={true}/> */}
         <div
           style={{
             position: "fixed",
@@ -166,7 +172,7 @@ function Viewer() {
             zIndex: "9999"
           }}
         >
-          Página{" "}
+          {" "}
           <input
             className="input-page"
             type="number"
@@ -185,7 +191,7 @@ function Viewer() {
               textAlign: "center",
             }}
           />{" "}
-          de {pdf?.numPages ?? "-"}
+          / {pdf?.numPages ?? "-"}
         </div>
       </div>
       <div
@@ -194,10 +200,11 @@ function Viewer() {
           width: "100%",
           display: "flex",
           justifyContent: "center",
-        }}
-      >
+        }}>
         <div style={{ position: "relative" }}>
-          <canvas ref={canvasRef}></canvas>
+
+          {/* Dark mode filter and conditional expression */}
+          <canvas ref={canvasRef} style={{ filter: darkMode ? 'invert(80%) brightness(100%) contrast(120%) sepia(50%) saturate(2) hue-rotate(180deg)' : '' }} className="canvas"></canvas>
 
           <div
             ref={textLayerRef}
