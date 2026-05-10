@@ -1,4 +1,4 @@
-name: CI for React and Vite app
+name: CI for React and Rust app
 on:
   pull_request:
     branches: [main]
@@ -7,23 +7,35 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'npm'
           cache-dependency-path: frontend/package-lock.json
 
-      - working-directory: frontend
+      - name: Frontend - install
+        working-directory: frontend
         run: npm ci
-      - working-directory: frontend
+
+      - name: Frontend - lint
+        working-directory: frontend
         run: npm run lint
-      - working-directory: frontend
+
+      - name: Frontend - build
+        working-directory: frontend
         run: npm run build
 
-      - working-directory: backend
-        run: npm install
-      - working-directory: backend
-        run: |
-          npm run start &
-          sleep 3
-          kill $!
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: backend
+
+      - name: Backend - build
+        working-directory: backend
+        run: cargo build
+
+      - name: Backend - test
+        working-directory: backend
+        run: cargo test

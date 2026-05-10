@@ -1,0 +1,54 @@
+name: CD - Release
+
+on:
+  push:
+    tags: ['v*']
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Frontend - install
+        working-directory: frontend
+        run: npm ci
+
+      - name: Frontend - build
+        working-directory: frontend
+        run: npm run build
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: x86_64-unknown-linux-musl
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: backend
+
+      - name: Backend - build
+        working-directory: backend
+        run: cargo build --release --target x86_64-unknown-linux-musl
+
+      - name: Package
+        run: |
+          RELEASE_DIR="nyarquive-${{ github.ref_name }}-linux-x86_64"
+          mkdir -p "$RELEASE_DIR"
+          cp backend/target/x86_64-unknown-linux-musl/release/nyarquive "$RELEASE_DIR/"
+          cp -r frontend/dist "$RELEASE_DIR/"
+          cp -r books "$RELEASE_DIR/"
+          tar -czf "$RELEASE_DIR.tar.gz" "$RELEASE_DIR"
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: nyarquive-${{ github.ref_name }}-linux-x86_64.tar.gz
