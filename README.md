@@ -2,7 +2,7 @@
 <h1 align="center"> NyArquive </h1>
 <p align="center">
     <a href="LICENSE"><img src="https://img.shields.io/github/license/Guhszvv/NyArquive?style=for-the-badge&color=orange"></a>
-    <a><img src="https://img.shields.io/badge/RAM-~50MB-blue?style=for-the-badge"></a>
+    <a><img src="https://img.shields.io/badge/RAM-~2MB-blue?style=for-the-badge"></a>
     <a><img src="https://img.shields.io/github/stars/Guhszvv/NyArquive?style=for-the-badge"></a>
 </p>
 </div>
@@ -16,8 +16,8 @@ If this project helped you, consider starring it!
 
 ## Used technologies
 
-- **Frontend**: React, Vite
-- **Backend**: Node
+- **Frontend**: React
+- **Backend**: Rust
 - **PDF Reader**: PDF.js
 
 ## How to run
