@@ -22,10 +22,10 @@ If this project helped you, consider starring it!
 
 ## How to run
 
-1. `git clone https://github.com/Guhszvv/NyArquive.git && cd NyArquive`
-2. `chmod +x ./install.sh`
+1. Download the latest release from [releases](https://github.com/Guhszvv/NyArquive/releases)
+2. Extract: `tar -xzf nyarquive-<version>-linux-x86_64.tar.gz`
 3. Drop your PDFs in `./books`
-4. `cd backend && npm run start`
+4. `./nyarquive`
 
 ## Keybinds
 | Key | Used to       |

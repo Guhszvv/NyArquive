@@ -40,3 +40,11 @@ Example: `feat: add PDF search by title`
 ## Issues
 
 You don't need an issue to open a PR, but feel free to open one if you want to discuss an idea before implementing it.
+
+## How to run (contributors)
+
+1. `git clone https://github.com/Guhszvv/NyArquive.git && cd NyArquive`
+2. `chmod +x ./install.sh && ./install.sh`
+3. Drop your PDFs in `./books`
+4. `./build.sh`
+5. `./backend/target/release/nyarquive`
