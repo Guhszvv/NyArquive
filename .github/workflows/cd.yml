@@ -45,7 +45,7 @@ jobs:
           mkdir -p "$RELEASE_DIR"
           cp backend/target/x86_64-unknown-linux-musl/release/nyarquive "$RELEASE_DIR/"
           cp -r frontend/dist "$RELEASE_DIR/"
-          cp -r books "$RELEASE_DIR/"
+          mkdir -p "$RELEASE_DIR/books"
           tar -czf "$RELEASE_DIR.tar.gz" "$RELEASE_DIR"
 
       - name: Release
