@@ -36,7 +36,7 @@ async fn main() {
 
 // List pdf's
 async fn get_files() -> Json<Vec<String>> {
-    let files = fs::read_dir("../books/")
+    let files = fs::read_dir("./books/")
         .unwrap()
         .filter_map(|e| e.ok())
         .map(|e| e.file_name().to_string_lossy().to_string())
@@ -53,7 +53,7 @@ async fn get_thumb(Path(name): Path<String>) -> impl IntoResponse {
         .to_string_lossy()
         .to_string();
 
-    let file_path = format!("../books/{}", name);
+    let file_path = format!("./books/{}", name);
 
     // Temporary output
     let tmp_output = format!("/tmp/thumb_{}", Uuid::new_v4());
@@ -114,7 +114,7 @@ async fn stream_pdf(Path(name): Path<String>) -> impl IntoResponse {
         .to_string_lossy()
         .to_string();
 
-    let file_path = format!("../books/{}", name);
+    let file_path = format!("./books/{}", name);
     let file = match File::open(file_path).await {
         Ok(f) => f,
         Err(_) => {
