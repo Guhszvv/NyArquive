@@ -21,6 +21,8 @@ If this project helped you, consider starring it!
 - **PDF Reader**: PDF.js
 
 ## How to run
+> [!IMPORTANT]
+> **Requires**: `pdftoppm` from Poppler
 
 1. Download the latest release from [releases](https://github.com/Guhszvv/NyArquive/releases)
 2. Extract: `tar -xzf nyarquive-<version>-linux-x86_64.tar.gz`
