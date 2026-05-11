@@ -5,7 +5,7 @@ Thanks for your interest in contributing! Here's everything you need to know.
 ## Getting Started
 
 1. Fork the repository
-2. Follow the [How to run](README.md#how-to-run) guide to set up locally
+2. Follow the [How to run](https://github.com/Guhszvv/NyArquive?tab=contributing-ov-file#how-to-run-contributors) guide to set up locally
 3. Create a branch from `main` for your changes
 
 ## Branch Naming
@@ -46,5 +46,4 @@ You don't need an issue to open a PR, but feel free to open one if you want to d
 1. `git clone https://github.com/Guhszvv/NyArquive.git && cd NyArquive`
 2. `chmod +x ./install.sh && ./install.sh`
 3. Drop your PDFs in `./books`
-4. `./build.sh`
 5. `./backend/target/release/nyarquive`
