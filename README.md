@@ -7,12 +7,11 @@
 </p>
 </div>
 
-
 NyArquive is a **ultra-lightweight**, **self-hosted library** that runs anywhere. No Docker, no database, no complexity. Just you and your PDFs
 
 If this project helped you, consider starring it!
 
-<img src="image.png" alt="NyArquive"> 
+<img src="image.png" alt="NyArquive">
 
 ## Used technologies
 
@@ -21,6 +20,7 @@ If this project helped you, consider starring it!
 - **PDF Reader**: PDF.js
 
 ## How to run
+>
 > [!IMPORTANT]
 > **Requires**: `pdftoppm` from Poppler
 
@@ -29,7 +29,12 @@ If this project helped you, consider starring it!
 3. Drop your PDFs in `./books`
 4. `./nyarquive`
 
+> [!TIP]
+> If needed, you can change the backend API address in `./dist/config.json`.
+> This allows changing the server URL without rebuilding the frontend, which is **useful for external access and reverse proxy setups**.
+
 ## Keybinds
+
 | Key | Used to       |
 |-----|---------------|
 | ↑   | Zoom In       |
