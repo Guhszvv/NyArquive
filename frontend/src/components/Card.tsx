@@ -5,14 +5,14 @@ function Card({ file }: { file: string }) {
   const storageKey = `pdf-page-${file}`;
   const savedPage = Number(localStorage.getItem(storageKey));
   const maxPage = Number(localStorage.getItem("max_page") ?? "1");
-  const progress = Math.round((savedPage / maxPage) /10);
+  const progress = Math.round((savedPage / maxPage) / 10);
 
   return (
     <div
       className="card"
       onClick={() => navigate(`/viewer/${encodeURIComponent(file)}`)}
     >
-      <img src={`${import.meta.env.VITE_API_URL}/thumbnail/${encodeURIComponent(file)}`} crossOrigin="anonymous" />
+      <img src={`${window.__CONFIG__.apiUrl}/thumbnail/${encodeURIComponent(file)}`} crossOrigin="anonymous" />
 
       <div className="card-info">
 

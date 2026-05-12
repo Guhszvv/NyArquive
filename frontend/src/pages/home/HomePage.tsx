@@ -7,14 +7,14 @@ function HomePage() {
   const [files, setFiles] = useState<string[]>([]);
   console.log(files);
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/files`)
+    fetch(`${window.__CONFIG__.apiUrl}/files`)
       .then(res => res.json())
       .then(setFiles);
   }, []);
 
   return (
     <div>
-      <NavBar isVisible={true} isViewer={false}/>
+      <NavBar isVisible={true} isViewer={false} />
 
       <div className="livros">
         {files.map((file) => (
