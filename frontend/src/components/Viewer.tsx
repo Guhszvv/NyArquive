@@ -22,7 +22,7 @@ function Viewer() {
   const [darkMode, setDarkMode] = useState(false);
 
   const storageKey = `pdf-page-${file}`;
-  const storageKeyMaxPage = `max-page-${file}`;  
+  const storageKeyMaxPage = `max-page-${file}`;
 
   // Load PDF
   useEffect(() => {
@@ -32,7 +32,7 @@ function Viewer() {
       const encoded = encodeURIComponent(file);
 
       const loadingTask = pdfjsLib.getDocument(
-        `${import.meta.env.VITE_API_URL}/pdf/${encoded}`
+        `${window.__CONFIG__.apiUrl}/pdf/${encoded}`
       );
 
       const pdfDoc = await loadingTask.promise;
@@ -111,13 +111,13 @@ function Viewer() {
       if (!pdf) return;
 
       if (
-          e.key === "ArrowUp" ||
-          e.key === "ArrowDown" ||
-          e.key === "ArrowLeft" ||
-          e.key === "ArrowRight" ||
-          e.shiftKey && e.key === "D"
-        ) {
-          e.preventDefault();
+        e.key === "ArrowUp" ||
+        e.key === "ArrowDown" ||
+        e.key === "ArrowLeft" ||
+        e.key === "ArrowRight" ||
+        e.shiftKey && e.key === "D"
+      ) {
+        e.preventDefault();
       }
 
       if (e.shiftKey && e.key === "D") {
