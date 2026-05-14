@@ -24,6 +24,18 @@ function Viewer() {
   const storageKey = `pdf-page-${file}`;
   const storageKeyMaxPage = `max-page-${file}`;
 
+  // Update last page
+  useEffect(() => {
+    if (!file) return;
+    const timeout = setTimeout(() => {
+      fetch(`${window.__CONFIG__.apiUrl}/book/${encodeURIComponent(file)}/${pageNum}`, {
+        method: "POST",
+      });
+      localStorage.setItem(storageKey, String(pageNum));
+    }, 500);
+    return () => clearTimeout(timeout);
+  }, [pageNum, file, storageKey]);
+
   // Load PDF
   useEffect(() => {
     if (!file) return;
