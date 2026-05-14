@@ -9,7 +9,14 @@ function HomePage() {
   useEffect(() => {
     fetch(`${window.__CONFIG__.apiUrl}/files`)
       .then(res => res.json())
-      .then(setFiles);
+      .then(files => {
+        setFiles(files);
+        return fetch(`${window.__CONFIG__.apiUrl}/book/check`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(files),
+        });
+      });
   }, []);
 
   return (
