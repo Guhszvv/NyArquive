@@ -12,3 +12,4 @@ tower-http = { version = "0.6.10", features = ["fs", "cors"] }
 header = "0.0.0"
 uuid = { version = "1.23.1", features = ["v4"] }
 tokio-util = "0.7.18"
+rusqlite = "0.39.0"
