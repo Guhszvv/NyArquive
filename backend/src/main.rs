@@ -32,6 +32,7 @@ async fn main() {
         .route("/pdf/{name}", get(stream_pdf))
         .route("/book/{title}/{page}", post(database::save_last_page))
         .route("/book/check", post(database::check_books))
+        .route("/book", get(database::get_last_page))
         .fallback_service(
             ServeDir::new("./dist/").not_found_service(ServeFile::new("./dist/index.html")),
         )

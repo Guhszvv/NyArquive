@@ -11,7 +11,6 @@ pub fn init_db(conn: Connection) -> rusqlite::Result<Connection> {
         )",
         (),
     )?;
-    println!("init_db rodou!");
     Ok(conn)
 }
 
@@ -29,7 +28,18 @@ pub async fn save_last_page(
     }
 }
 
-// Get Book Page by Name
+// Get Book Last Page by Name
+pub async fn get_last_page() -> impl IntoResponse {
+    let conn = Connection::open("./main.db").unwrap();
+    let mut list = conn.prepare("SELECT title, last_page FROM books").unwrap();
+    let books: Vec<(String, u16)> = list
+        .query_map([], |row| Ok((row.get(0)?, row.get(1)?)))
+        .unwrap()
+        .filter_map(|r| r.ok())
+        .collect();
+
+    Json(books)
+}
 
 // Add/Delete books by books Array
 pub async fn check_books(Json(titles): Json<Vec<String>>) -> impl IntoResponse {
@@ -56,18 +66,9 @@ pub async fn check_books(Json(titles): Json<Vec<String>>) -> impl IntoResponse {
 
     // Insere os que não existem ainda
     for nome in &titles {
-        let rows = conn
-            .execute("INSERT OR IGNORE INTO books (title) VALUES (?1)", [nome])
+        conn.execute("INSERT OR IGNORE INTO books (title) VALUES (?1)", [nome])
             .unwrap();
-        println!("inserido '{}': {} rows", nome, rows);
     }
-
-    println!("titles: {:?}", titles);
-    println!("query: {}", query);
-    println!(
-        "rows deletados: {}",
-        conn.execute(&query, params.as_slice()).unwrap()
-    );
 
     StatusCode::OK
 }
