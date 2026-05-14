@@ -235,12 +235,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "header"
-version = "0.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5f9695c88d669811056f46ab6fa51a470b85c6ee591403d078bfaf99dcb23b3d"
-
-[[package]]
 name = "heck"
 version = "0.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -449,7 +443,6 @@ name = "nyarquive"
 version = "0.1.0"
 dependencies = [
  "axum",
- "header",
  "rusqlite",
  "serde",
  "serde_json",
