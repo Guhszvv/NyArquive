@@ -1,8 +1,11 @@
+mod database;
 use axum::body::Body;
 use axum::extract::Path;
 use axum::http::{StatusCode, header};
 use axum::response::IntoResponse;
+use axum::routing::post;
 use axum::{Json, Router, routing::get};
+use rusqlite::Connection;
 use std::fs;
 use std::process::Command;
 use tokio::fs::File;
@@ -20,10 +23,15 @@ async fn main() {
     println!("║  PID: {:<23}║", std::process::id());
     println!("╚══════════════════════════════╝");
 
+    let conn = Connection::open("./main.db").unwrap();
+    database::init_db(conn).unwrap();
+
     let app = Router::new()
         .route("/files", get(get_files))
         .route("/thumbnail/{name}", get(get_thumb))
         .route("/pdf/{name}", get(stream_pdf))
+        .route("/book/{title}/{page}", post(database::save_last_page))
+        .route("/book/check", post(database::check_books))
         .fallback_service(
             ServeDir::new("./dist/").not_found_service(ServeFile::new("./dist/index.html")),
         )
