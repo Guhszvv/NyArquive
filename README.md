@@ -7,7 +7,7 @@
 </p>
 </div>
 
-NyArquive is a **ultra-lightweight**, **self-hosted library** that runs anywhere. No Docker, no database, no complexity. Just you and your PDFs
+NyArquive is a **ultra-lightweight**, **self-hosted library** that runs anywhere. No Docker, no complexity. Just you and your PDFs
 
 If this project helped you, consider starring it!
 
