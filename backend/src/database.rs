@@ -1,5 +1,5 @@
 use axum::{Json, extract::Path, http::StatusCode, response::IntoResponse};
-use rusqlite::{Connection, Result};
+use rusqlite::Connection;
 
 // Start DB
 pub fn init_db(conn: Connection) -> rusqlite::Result<Connection> {
@@ -15,17 +15,14 @@ pub fn init_db(conn: Connection) -> rusqlite::Result<Connection> {
 }
 
 // Save Book Page
-pub async fn save_last_page(
-    Path((title, page)): Path<(String, u16)>,
-) -> Result<StatusCode, StatusCode> {
+pub async fn save_last_page(Path((title, page)): Path<(String, u16)>) -> impl IntoResponse {
     let conn = Connection::open("./main.db").unwrap();
-    match conn.execute(
+    conn.execute(
         "UPDATE books SET last_page = ?1 WHERE title = ?2",
         (page, title),
-    ) {
-        Ok(_) => Ok(StatusCode::OK),
-        Err(_) => Err(StatusCode::INTERNAL_SERVER_ERROR),
-    }
+    )
+    .unwrap();
+    StatusCode::OK
 }
 
 // Get Book Last Page by Name
