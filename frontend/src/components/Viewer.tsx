@@ -4,11 +4,12 @@ import type { PDFDocumentProxy } from "pdfjs-dist";
 import pdfWorker from "pdfjs-dist/build/pdf.worker.min.js?url";
 import { useParams } from "react-router-dom";
 import "pdfjs-dist/web/pdf_viewer.css";
-// import NavBar from "./NavBar";
+import { updateLocalStorage } from "../modules/localStorage";
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker;
 
 function Viewer() {
+  const renderTaskRef = useRef<any>(null);
   const { file } = useParams<{ file: string }>();
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -16,7 +17,7 @@ function Viewer() {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   const [pdf, setPdf] = useState<PDFDocumentProxy | null>(null);
-  const [pageNum, setPageNum] = useState<number>(1);
+  const [pageNum, setPageNum] = useState<number | null>(null);
   const [, setMaxPage] = useState<number>(1);
   const [scale, setScale] = useState<number>(1);
   const [darkMode, setDarkMode] = useState(false);
@@ -26,7 +27,7 @@ function Viewer() {
 
   // Update last page
   useEffect(() => {
-    if (!file) return;
+    if (!file || pageNum === null || Number.isNaN(pageNum)) return;
     const timeout = setTimeout(() => {
       fetch(`${window.__CONFIG__.apiUrl}/book/${encodeURIComponent(file)}/${pageNum}`, {
         method: "POST",
@@ -41,6 +42,9 @@ function Viewer() {
     if (!file) return;
 
     const loadPdf = async () => {
+
+      await updateLocalStorage(`${window.__CONFIG__.apiUrl}/book`);
+
       const encoded = encodeURIComponent(file);
 
       const loadingTask = pdfjsLib.getDocument(
@@ -61,66 +65,102 @@ function Viewer() {
 
   // Render page
   useEffect(() => {
-    if (!pdf) return;
-    if (!canvasRef.current || !textLayerRef.current || !containerRef.current) return;
+    if (!pdf || pageNum === null || Number.isNaN(pageNum)) return;
+
+    if (
+      !canvasRef.current ||
+      !textLayerRef.current ||
+      !containerRef.current
+    ) return;
+
+    let cancelled = false;
 
     const renderPage = async () => {
-      const page = await pdf.getPage(pageNum);
+      try {
+        const page = await pdf.getPage(pageNum);
 
-      const containerWidth = containerRef.current!.clientWidth;
+        if (cancelled) return;
 
-      const baseViewport = page.getViewport({ scale: 1 });
+        const containerWidth = containerRef.current!.clientWidth;
 
-      const responsiveScale = containerWidth / baseViewport.width;
+        const baseViewport = page.getViewport({ scale: 1 });
 
-      const finalScale = responsiveScale * scale;
+        const responsiveScale = containerWidth / baseViewport.width;
 
-      const viewport = page.getViewport({ scale: finalScale });
+        const finalScale = responsiveScale * scale;
 
-      containerRef.current?.style.setProperty(
-        "--scale-factor",
-        finalScale.toString()
-      );
+        const viewport = page.getViewport({ scale: finalScale });
 
-      const canvas = canvasRef.current!;
-      const context = canvas.getContext("2d");
+        const canvas = canvasRef.current!;
+        const context = canvas.getContext("2d");
 
-      if (!context) return;
+        if (!context) return;
 
-      canvas.width = viewport.width;
-      canvas.height = viewport.height;
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
 
-      const textLayer = textLayerRef.current!;
-      textLayer.innerHTML = "";
+        const textLayer = textLayerRef.current!;
 
-      textLayer.style.width = `${viewport.width}px`;
-      textLayer.style.height = `${viewport.height}px`;
+        textLayer.style.setProperty(
+          "--scale-factor",
+          viewport.scale.toString()
+        );
 
-      await page.render({
-        canvasContext: context,
-        viewport,
-      }).promise;
+        textLayer.innerHTML = "";
 
-      const textContent = await page.getTextContent();
+        textLayer.style.width = `${viewport.width}px`;
+        textLayer.style.height = `${viewport.height}px`;
 
-      pdfjsLib.renderTextLayer({
-        textContentSource: textContent,
-        container: textLayer,
-        viewport,
-        textDivs: [],
-      });
+        if (renderTaskRef.current) {
+          try {
+            renderTaskRef.current.cancel();
+          } catch { }
+        }
 
-      localStorage.setItem(storageKey, String(pageNum));
-      localStorage.setItem(storageKeyMaxPage, String(pdf?.numPages ?? "-"));
+        renderTaskRef.current = page.render({
+          canvasContext: context,
+          viewport,
+        });
+
+        await renderTaskRef.current.promise;
+
+        if (cancelled) return;
+
+        const textContent = await page.getTextContent();
+
+        if (cancelled) return;
+
+        pdfjsLib.renderTextLayer({
+          textContentSource: textContent,
+          container: textLayer,
+          viewport,
+          textDivs: [],
+        });
+
+      } catch (err: any) {
+        if (err?.name !== "RenderingCancelledException") {
+          console.error(err);
+        }
+      }
     };
 
     renderPage();
-  }, [pdf, pageNum, storageKey, scale, storageKeyMaxPage]);
+
+    return () => {
+      cancelled = true;
+
+      if (renderTaskRef.current) {
+        try {
+          renderTaskRef.current.cancel();
+        } catch { }
+      }
+    };
+  }, [pdf, pageNum, scale]);
 
   // Keybinds
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
-      if (!pdf) return;
+      if (!pdf || pageNum === null || Number.isNaN(pageNum)) return;
 
       if (
         e.key === "ArrowUp" ||
@@ -137,11 +177,19 @@ function Viewer() {
       }
 
       if (e.key === "ArrowRight") {
-        setPageNum((p) => Math.min(p + 1, pdf.numPages));
+        setPageNum((p) => {
+          if (p === null || Number.isNaN(p)) return 1;
+
+          return Math.min(p + 1, pdf.numPages);
+        });
       }
 
       if (e.key === "ArrowLeft") {
-        setPageNum((p) => Math.max(p - 1, 1));
+        setPageNum((p) => {
+          if (p === null || Number.isNaN(p)) return 1;
+
+          return Math.max(p - 1, 1);
+        });
       }
 
       if (e.key === "ArrowUp") {
@@ -190,7 +238,7 @@ function Viewer() {
             type="number"
             min="1"
             max={pdf?.numPages ?? 1}
-            value={pageNum}
+            value={pageNum ?? ""}
             onChange={(e) => setPageNum(Number(e.target.value))}
             style={{
               width: "60px",
