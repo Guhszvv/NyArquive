@@ -42,8 +42,6 @@ pub async fn get_last_page() -> impl IntoResponse {
 pub async fn check_books(Json(titles): Json<Vec<String>>) -> impl IntoResponse {
     let conn = Connection::open("./main.db").unwrap();
 
-    println!("check_books rodou!");
-
     if titles.is_empty() {
         conn.execute("DELETE FROM books", []).unwrap();
         return StatusCode::OK;
