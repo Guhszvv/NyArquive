@@ -7,7 +7,7 @@ pub fn init_db(conn: Connection) -> rusqlite::Result<Connection> {
         "CREATE TABLE IF NOT EXISTS books (
                   id        INTEGER PRIMARY KEY,
                   title     TEXT NOT NULL UNIQUE,
-                  last_page INTERGER NOT NULL DEFAULT 0
+                  last_page INTERGER NOT NULL DEFAULT 1
         )",
         (),
     )?;
@@ -61,8 +61,11 @@ pub async fn check_books(Json(titles): Json<Vec<String>>) -> impl IntoResponse {
 
     // Insere os que não existem ainda
     for nome in &titles {
-        conn.execute("INSERT OR IGNORE INTO books (title) VALUES (?1)", [nome])
-            .unwrap();
+        conn.execute(
+            "INSERT OR IGNORE INTO books (title, last_page) VALUES (?1, ?2)",
+            (nome, 1),
+        )
+        .unwrap();
     }
 
     StatusCode::OK
