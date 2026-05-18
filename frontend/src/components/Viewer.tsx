@@ -5,11 +5,12 @@ import pdfWorker from "pdfjs-dist/build/pdf.worker.min.js?url";
 import { useParams } from "react-router-dom";
 import "pdfjs-dist/web/pdf_viewer.css";
 import { updateLocalStorage } from "../modules/localStorage";
+import type { RenderTask } from "pdfjs-dist";
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker;
 
 function Viewer() {
-  const renderTaskRef = useRef<any>(null);
+  const renderTaskRef = useRef<RenderTask>(null);
   const { file } = useParams<{ file: string }>();
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -114,7 +115,9 @@ function Viewer() {
         if (renderTaskRef.current) {
           try {
             renderTaskRef.current.cancel();
-          } catch { }
+          } catch (e) {
+            console.log(e);
+          }
         }
 
         renderTaskRef.current = page.render({
@@ -137,8 +140,8 @@ function Viewer() {
           textDivs: [],
         });
 
-      } catch (err: any) {
-        if (err?.name !== "RenderingCancelledException") {
+      } catch (err: unknown) {
+        if (err instanceof Error && err?.name !== "RenderingCancelledException") {
           console.error(err);
         }
       }
@@ -152,7 +155,9 @@ function Viewer() {
       if (renderTaskRef.current) {
         try {
           renderTaskRef.current.cancel();
-        } catch { }
+        } catch (e) {
+          console.log(e);
+        }
       }
     };
   }, [pdf, pageNum, scale]);
@@ -203,7 +208,7 @@ function Viewer() {
 
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
-  }, [pdf, darkMode]);
+  }, [pdf, darkMode, pageNum]);
 
   // Resize
   useEffect(() => {
