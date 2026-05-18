@@ -21,7 +21,7 @@ jobs:
 
       - name: Creating config.json
         working-directory: frontend/public
-        run: cp -r config.example.json config.json
+        run: mv -r config.example.json config.json
 
       - name: Frontend - install
         working-directory: frontend
