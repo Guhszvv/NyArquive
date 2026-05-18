@@ -2,7 +2,7 @@
 <h1 align="center"> NyArquive </h1>
 <p align="center">
     <a href="LICENSE"><img src="https://img.shields.io/github/license/Guhszvv/NyArquive?style=for-the-badge&color=orange"></a>
-    <a><img src="https://img.shields.io/badge/RAM-~6MB-blue?style=for-the-badge"></a>
+    <a><img src="https://img.shields.io/badge/RAM-~4MB-blue?style=for-the-badge"></a>
     <a><img src="https://img.shields.io/github/stars/Guhszvv/NyArquive?style=for-the-badge"></a>
 </p>
 </div>
