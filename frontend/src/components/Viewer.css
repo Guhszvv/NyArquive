@@ -1,0 +1,140 @@
+.pdf-viewer {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 24px 112px 24px 24px;
+}
+
+.pdf-viewer-page {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  overflow: auto;
+}
+
+.pdf-viewer-canvas {
+  display: block;
+  max-width: 100%;
+  background: #ffffff;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.35);
+}
+
+.pdf-viewer-text-layer {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: auto;
+  overflow: hidden;
+  text-align: initial;
+}
+
+.pdf-viewer-controls {
+  position: fixed;
+  right: 12px;
+  top: 50%;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px;
+  color: #f8fafc;
+  background: rgba(13, 19, 33, 0.88);
+  border: 1px solid rgba(240, 235, 216, 0.18);
+  border-radius: 8px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.32);
+  transform: translateY(-50%);
+}
+
+.pdf-viewer-button {
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 6px;
+  color: #f8fafc;
+  background: rgba(255, 255, 255, 0.12);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.pdf-viewer-button:disabled {
+  opacity: 0.38;
+  cursor: default;
+}
+
+.pdf-viewer-page-control {
+  display: grid;
+  grid-template-columns: 38px auto auto;
+  align-items: center;
+  gap: 3px;
+}
+
+svg {
+    width: 18px;
+}
+
+.pdf-viewer-page-input {
+  width: 38px;
+  height: 28px;
+  border: 1px solid rgba(240, 235, 216, 0.28);
+  border-radius: 6px;
+  color: #f8fafc;
+  background: rgba(255, 255, 255, 0.1);
+  text-align: center;
+  font: inherit;
+  font-size: 13px;
+}
+
+.pdf-viewer-page-separator,
+.pdf-viewer-page-total {
+  font-size: 13px;
+  color: rgba(248, 250, 252, 0.84);
+}
+
+@media (max-width: 720px) {
+  .pdf-viewer {
+    padding: 16px 16px 82px;
+  }
+
+  .pdf-viewer-controls {
+    top: auto;
+    right: 50%;
+    bottom: 12px;
+    gap: 6px;
+    padding: 7px;
+    transform: translateX(50%);
+  }
+
+  .pdf-viewer-button {
+    width: 32px;
+    height: 32px;
+    font-size: 22px;
+  }
+
+  .pdf-viewer-page-control {
+    grid-template-columns: 42px auto auto;
+  }
+
+  .pdf-viewer-page-input {
+    width: 42px;
+    height: 32px;
+  }
+}
+
+/* Remove Arrows from page input */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}

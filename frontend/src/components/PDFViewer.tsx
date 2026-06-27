@@ -1,5 +1,7 @@
 import React from 'react';
+import 'pdfjs-dist/web/pdf_viewer.css';
 import './Viewer.css';
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 export interface PDFViewerProps {
   canvasRef: React.RefObject<HTMLCanvasElement | null>;
@@ -20,7 +22,7 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ canvasRef, textLayerRef, page, nu
     <div className="pdf-viewer">
       <div className="pdf-viewer-page">
         <canvas className="pdf-viewer-canvas" ref={canvasRef} />
-        <div className="pdf-viewer-text-layer" ref={textLayerRef} />
+        <div className="pdf-viewer-text-layer textLayer" ref={textLayerRef} />
       </div>
 
       <div className="pdf-viewer-controls">
@@ -28,9 +30,8 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ canvasRef, textLayerRef, page, nu
           className="pdf-viewer-button"
           onClick={() => handlePageChange(page - 1)}
           disabled={page <= 1}
-          aria-label="Página anterior"
         >
-          ‹
+          <FaArrowLeft />
         </button>
 
         <div className="pdf-viewer-page-control">
@@ -41,20 +42,18 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ canvasRef, textLayerRef, page, nu
             max={numPages}
             value={page}
             onChange={(event) => handlePageChange(Number(event.target.value))}
-            aria-label="Página atual"
           />
-          <span className="pdf-viewer-page-separator">/</span>
-          <span className="pdf-viewer-page-total">{numPages}</span>
+          <span className="pdf-viewer-page-total">/ {numPages}</span>
         </div>
 
         <button
           className="pdf-viewer-button"
           onClick={() => handlePageChange(page + 1)}
           disabled={page >= numPages}
-          aria-label="Próxima página"
         >
-          ›
+          <FaArrowRight />
         </button>
+
       </div>
     </div>
   );
