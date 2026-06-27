@@ -31,7 +31,7 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ canvasRef, textLayerRef, page, nu
           onClick={() => handlePageChange(page - 1)}
           disabled={page <= 1}
         >
-          <FaArrowLeft />
+          <FaArrowLeft className='page-control-svg'/>
         </button>
 
         <div className="pdf-viewer-page-control">
@@ -51,7 +51,7 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ canvasRef, textLayerRef, page, nu
           onClick={() => handlePageChange(page + 1)}
           disabled={page >= numPages}
         >
-          <FaArrowRight />
+          <FaArrowRight className='page-control-svg'/>
         </button>
 
       </div>
