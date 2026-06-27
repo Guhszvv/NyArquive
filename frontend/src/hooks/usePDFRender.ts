@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react';
-import type { PDFDocumentProxy, PDFPageProxy, RenderTask } from 'pdfjs-dist';
+import { renderTextLayer } from 'pdfjs-dist';
+import type { PDFDocumentProxy, PDFPageProxy, RenderTask, TextLayerRenderTask } from 'pdfjs-dist';
 
 const usePDFRender = (
   pdfDocument: PDFDocumentProxy | null,
@@ -10,6 +11,7 @@ const usePDFRender = (
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const textLayerRef = useRef<HTMLDivElement | null>(null);
   const renderTaskRef = useRef<RenderTask | null>(null);
+  const textLayerTaskRef = useRef<TextLayerRenderTask | null>(null);
 
   const renderPage = useCallback(async () => {
     if (!pdfDocument || canvasRef.current === null || textLayerRef.current === null) return;
@@ -29,6 +31,9 @@ const usePDFRender = (
     canvas.width = viewport.width;
     canvas.style.height = `${viewport.height}px`;
     canvas.style.width = `${viewport.width}px`;
+    textLayerRef.current.style.height = `${viewport.height}px`;
+    textLayerRef.current.style.width = `${viewport.width}px`;
+    textLayerRef.current.style.setProperty('--scale-factor', String(viewport.scale));
     textLayerRef.current.replaceChildren();
 
     const renderContext = {
@@ -40,6 +45,17 @@ const usePDFRender = (
     const renderTask = pdfPage.render(renderContext);
     renderTaskRef.current = renderTask;
     await renderTask.promise;
+
+    const textContent = await pdfPage.getTextContent();
+    textLayerTaskRef.current?.cancel();
+    const textLayerTask = renderTextLayer({
+      textContentSource: textContent,
+      container: textLayerRef.current,
+      viewport,
+      textDivs: [],
+    });
+    textLayerTaskRef.current = textLayerTask;
+    await textLayerTask.promise;
   }, [pdfDocument, page, width, zoom]);
 
   useEffect(() => {
@@ -54,6 +70,7 @@ const usePDFRender = (
     return () => {
       cancelled = true;
       renderTaskRef.current?.cancel();
+      textLayerTaskRef.current?.cancel();
     };
   }, [renderPage]);
 
