@@ -23,16 +23,16 @@ const usePagePersistence = (
       onSetPage(clampPage(savedPage, numPages));
     }
 
-    localStorage.setItem('max_page', String(numPages));
+    localStorage.setItem(`max_page_${file}`, String(numPages));
     hasLoadedSavedPage.current = true;
-  }, [numPages, onSetPage, storageKey]);
+  }, [file, numPages, onSetPage, storageKey]);
 
   useEffect(() => {
     if (numPages < 1 || !hasLoadedSavedPage.current) return;
 
     localStorage.setItem(storageKey, String(clampPage(page, numPages)));
-    localStorage.setItem('max_page', String(numPages));
-  }, [numPages, page, storageKey]);
+    localStorage.setItem(`max_page_${file}`, String(numPages));
+  }, [file, numPages, page, storageKey]);
 };
 
 export default usePagePersistence;
