@@ -28,6 +28,7 @@ If this project helped you, consider starring it!
 2. Extract: `tar -xzf nyarquive-<version>-linux-x86_64.tar.gz`
 3. Drop your PDFs in `./books`
 4. `./nyarquive`
+5. If you need another port, run `./nyarquive --port 3005`
 
 > [!TIP]
 > If needed, you can change the backend API address in `./dist/config.json`.
