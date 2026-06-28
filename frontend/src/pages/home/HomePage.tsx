@@ -6,7 +6,6 @@ import { updateLocalStorage } from '../../modules/localStorage.ts';
 
 function HomePage() {
   const [files, setFiles] = useState<string[]>([]);
-  // console.log(files);
   useEffect(() => {
     fetch(`${window.__CONFIG__.apiUrl}/files`)
       .then(res => res.json())
