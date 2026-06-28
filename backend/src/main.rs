@@ -14,12 +14,26 @@ use tower_http::cors::CorsLayer;
 use tower_http::services::{ServeDir, ServeFile};
 use uuid::Uuid;
 
+// get --port argument
+fn parse_port() -> u16 {
+    let args: Vec<String> = std::env::args().collect();
+    for arg in args.iter().skip(1) {
+        if arg == "--port" && args.len() > 2 {
+            let port = args[2].parse::<u16>();
+            return port.unwrap_or(3004);
+        }
+    }
+    3004
+}
+
 #[tokio::main]
 async fn main() {
+    let port = parse_port();
+
     println!("╔══════════════════════════════╗");
     println!("║       NyArquive Server       ║");
     println!("╠══════════════════════════════╣");
-    println!("║  http://0.0.0.0:3004         ║");
+    println!("║  http://0.0.0.0:{}         ║", port);
     println!("║  PID: {:<23}║", std::process::id());
     println!("╚══════════════════════════════╝");
 
@@ -38,7 +52,7 @@ async fn main() {
         )
         .layer(CorsLayer::permissive());
 
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:3004").await.unwrap();
+    let listener = tokio::net::TcpListener::bind(format!("0.0.0.0:{}", port)).await.unwrap();
 
     axum::serve(listener, app).await.unwrap();
 }
