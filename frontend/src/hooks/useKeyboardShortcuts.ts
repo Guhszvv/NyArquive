@@ -4,6 +4,7 @@ const useKeyboardShortcuts = (
   numPages: number,
   onSetPage: Dispatch<SetStateAction<number>>,
   onSetZoom: Dispatch<SetStateAction<number>>,
+  onSetDarkMode: Dispatch<SetStateAction<boolean>>,
 ) => {
   useEffect(() => {
     const handleKeydown = (event: KeyboardEvent) => {
@@ -22,6 +23,9 @@ const useKeyboardShortcuts = (
       } else if (event.key === 'ArrowDown') {
         event.preventDefault();
         onSetZoom((currentZoom) => Math.max(currentZoom - 0.2, 0.2));
+      } else if (event.shiftKey && event.key === 'D') {
+        event.preventDefault();
+        onSetDarkMode((currentMode) => !currentMode);
       }
     };
 
@@ -30,7 +34,7 @@ const useKeyboardShortcuts = (
     return () => {
       window.removeEventListener('keydown', handleKeydown);
     };
-  }, [numPages, onSetPage, onSetZoom]);
+  }, [numPages, onSetPage, onSetZoom, onSetDarkMode]);
 };
 
 export default useKeyboardShortcuts;

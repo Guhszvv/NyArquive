@@ -11,6 +11,7 @@ const Viewer: React.FC = () => {
   const { file } = useParams<{ file: string }>();
   const [page, setPage] = useState(1);
   const [zoom, setZoom] = useState(1);
+  const [mode, setMode] = useState(false);
   const width = useResize();
   const url = useMemo(() => {
     if (!file) return '';
@@ -31,7 +32,7 @@ const Viewer: React.FC = () => {
   const { canvasRef, textLayerRef } = usePDFRender(pdfDocument, visiblePage, width, zoom);
 
   usePagePersistence(file ?? '', visiblePage, numPages, setClampedPage);
-  useKeyboardShortcuts(numPages, setClampedPage, setZoom);
+  useKeyboardShortcuts(numPages, setClampedPage, setZoom, setMode);
 
   if (!file) return <div>PDF não encontrado.</div>;
 
@@ -46,6 +47,7 @@ const Viewer: React.FC = () => {
       page={visiblePage}
       numPages={numPages}
       onSetPage={setClampedPage}
+      mode={mode}
     />
   );
 };
