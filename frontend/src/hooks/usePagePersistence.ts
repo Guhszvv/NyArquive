@@ -32,6 +32,14 @@ const usePagePersistence = (
 
     localStorage.setItem(storageKey, String(clampPage(page, numPages)));
     localStorage.setItem(`max_page_${file}`, String(numPages));
+
+    const timeout = setTimeout(() => {
+      fetch(`${window.__CONFIG__.apiUrl}/book/${encodeURIComponent(file)}/${clampPage(page, numPages)}`, {
+        method: 'POST',
+      });
+    }, 500);
+
+    return () => clearTimeout(timeout);
   }, [file, numPages, page, storageKey]);
 };
 
